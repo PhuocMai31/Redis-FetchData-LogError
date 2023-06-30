@@ -32,7 +32,7 @@ export default async function getPhotos(req, res) {
                 }
             });
         } else {
-            await insertError('nobody', "No body data")
+            await insertError('nobody', "No body data1")
             res.status(400).send('noBodydata')
         }
 }

@@ -21,30 +21,28 @@ export async function getErrorsWithKey(req,res) {
     try {
         const {keyError} = req.query;
         const errorResult = await client.lrange(keyError, 0 , -1)
-        console.log(errorResult)
         if (errorResult.length > 0){
             let data = []
+            let tempVariable = []
             for (let i = 0; i < errorResult.length; i++) {
-                let errorDetail = {};
                 const errorValue = await client.get(`${errorResult[i]}`);
                 let parsedJson = JSON.parse(errorValue);
                 parsedJson.value = parsedJson.value.replace(/^"(.*)"$/, '$1');
-                data.push(parsedJson);
-                const containsOpenBracket = data[0].value.includes('{"');
-                console.log(containsOpenBracket)
+                tempVariable.push(parsedJson);
+                const containsOpenBracket = tempVariable[0].value.includes('{"');
                 if (containsOpenBracket){
-                    var parsedResponse = data.map(item => {
+                    var parsedResponse = tempVariable.map(item => {
                         const parsedValue = JSON.parse(item.value);
                         return { ...item, value: parsedValue };
                     });
-                  return res.json(parsedResponse)
+                    data = parsedResponse
+                } else {
+                    data.push(parsedJson)
                 }
             }
-            console.log(data)
             res.json(data)
         } else res.json({message: "nodata"})
     } catch (err) {
-        console.error(err);
         res.status(500).send('Internal Server Error');
     }
 }
@@ -54,10 +52,10 @@ export async function getListKeysError(req, res) {
         const listKeysError = await client.keys('*')
         console.log(listKeysError)
         for (let i = 0; i < listKeysError.length; i++) {
-            const pattern = /\d{1,2}\/\d{1,2}\/\d{4}/; // Mẫu ngày tháng dạng dd/mm/yyyy
+            const pattern = /\d{1,2}\/\d{1,2}\/\d{4}/;
             if (pattern.test(listKeysError[i])) {
                 listKeysError.splice(i, 1);
-                i--; // Giảm giá trị của biến đếm để xử lý phần tử tiếp theo
+                i--;
             }
         }
         console.log(listKeysError)
