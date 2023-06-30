@@ -9,7 +9,9 @@ import {client} from "../server.js";
 export default async function getPhotos(req, res) {
         if(req.body){
             console.log(req.body)
-            // await insertError('body', req.body)
+            await insertError('body', req.body)
+            const time = new Date()
+            console.log(time)
             const photosRedisKey = 'user:photos';
             return client.get(photosRedisKey, async (err, photos) => {
                 if (photos) {
