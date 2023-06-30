@@ -1,0 +1,21 @@
+{
+  "name": "learnredis",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "body-parser": "^1.20.2",
+    "express": "^4.18.2",
+    "fetch": "^1.1.0",
+    "ioredis": "^5.3.2",
+    "node-fetch": "^3.3.1",
+    "redis": "^3.1.2"
+  }
+}
